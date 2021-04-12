@@ -22,7 +22,7 @@ It doesn't send your information anywhere because that's not a cool thing to do!
 ### Will running this program affect my computer performance?
 
 It shouldn't. The processing pipeline is written in such a way to work as little as possible. Should you encounter a negative performance impact, let me
-know (TODO(BP); Link to create a new issue.. boi)!
+know [by leaving a remark on a new Github issue](https://github.com/Bert-Proesmans/SC-Buddy/issues/new)!
 
 ### My question isn't listed!
 
