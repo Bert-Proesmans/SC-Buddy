@@ -1,0 +1,76 @@
+﻿<Window x:Class="SC_Buddy.UI.Test"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SC_Buddy.UI"
+        xmlns:model="clr-namespace:SC_Buddy.Model"
+        mc:Ignorable="d"
+        Title="Test" Height="450" Width="800"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Background="Transparent">
+    <Window.DataContext>
+        <model:SuperChatVM/>
+    </Window.DataContext>
+    <Border CornerRadius="4">
+        <Border.Effect>
+            <DropShadowEffect />
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" MaxHeight="350"/>
+            </Grid.RowDefinitions>
+
+            <Thumb Grid.Row="0"
+                   Grid.Column="0"
+                   x:Name="MoveThumb"
+                   Width="0"
+                   Height="0"/>
+
+            <Border Grid.Row="0"
+                    Background="{Binding HeaderBackground}"
+                    Padding="16,8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" MaxWidth="250"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0"
+                        Grid.RowSpan="2"
+                        Padding="0,0,16,0">
+                        <Ellipse Fill="{Binding ProfileBackground}"
+                                 Width="40"
+                                 Height="40"/>
+                    </Border>
+
+                    <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           Text="{Binding Name}"
+                           Foreground="{Binding TextForegroundTransparent}"/>
+
+                    <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           Text="{Binding Amount}"
+                           Foreground="{Binding TextForeground}"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Padding="16,8"
+                    Background="{Binding TextBackground}">
+                <Grid>
+                    <TextBlock Text="{Binding Message}"
+                               Foreground="{Binding TextForeground}"
+                               TextWrapping="Wrap"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,92 @@
+﻿<Popup x:Class="SC_Buddy.UI.Highlight"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:local="clr-namespace:SC_Buddy.UI"
+       xmlns:model="clr-namespace:SC_Buddy.Model"
+       mc:Ignorable="d"
+       Placement="Top"
+       Focusable="False"
+       PopupAnimation="Fade"
+       AllowsTransparency="True">
+    <Popup.DataContext>
+        <model:SuperChatVM/>
+    </Popup.DataContext>
+    <Grid>
+        <Border Grid.Column="0" CornerRadius="4">
+            <!-- TODO; Find out why in godsname dropshadow doesn't work and any kind of padding doesn't
+            generate useful visual debugging info either -->
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" ShadowDepth="100" />
+            </Border.Effect>
+        </Border>
+        <Border Grid.Column="0" CornerRadius="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" MaxHeight="350"/>
+                </Grid.RowDefinitions>
+
+                <Thumb Grid.Row="0"
+                   Grid.Column="0"
+                   x:Name="MoveThumb"
+                   Width="0"
+                   Height="0"/>
+
+                <Border Grid.Row="0"
+                    Background="{Binding HeaderBackground}"
+                    Padding="16,8">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" MinWidth="303"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0"
+                        Grid.RowSpan="2"
+                        Padding="0,0,16,0">
+                            <Ellipse Fill="{Binding ProfileBackground}"
+                                 Width="40"
+                                 Height="40"/>
+                        </Border>
+
+                        <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           Text="{Binding Name}"
+                           Foreground="{Binding TextForegroundTransparent}"/>
+
+                        <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           Text="{Binding Amount}"
+                           Foreground="{Binding TextForeground}"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1"
+                    Padding="16,8"
+                    Background="{Binding TextBackground}"
+                    Visibility="Visible">
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TextBackground, TargetNullValue={x:Null}}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <TextBlock Text="{Binding Message}"
+                               Foreground="{Binding TextForeground}"
+                               TextWrapping="Wrap"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Popup>

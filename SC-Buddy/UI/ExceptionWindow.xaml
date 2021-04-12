@@ -1,0 +1,82 @@
+﻿<Window x:Class="SC_Buddy.UI.ExceptionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SC_Buddy.UI"
+        mc:Ignorable="d"
+        Title="Unexpected application error" 
+        Width="700"
+        MaxHeight="650"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        Closed="Window_Closed">
+    <Window.Resources>
+        <Style x:Key="Label" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,8,0,4"/>
+        </Style>
+        <Style x:Key="Value" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,8,0,4"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Header -->
+            <RowDefinition Height="auto"/>
+            <!-- Details -->
+            <RowDefinition Height="*"/>
+            <!-- Actions -->
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0"
+                   Margin="16"
+                   FontSize="14"
+                   Text="An unexpected error occurred. Try restarting the application."
+                   TextWrapping="Wrap"/>
+
+        <!-- Details -->
+        <Border Grid.Row="1"
+                MaxHeight="450"
+                Background="#EEEEEE">
+            <Expander Margin="16,8"
+                      Header="Exception details">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource Label}" 
+                                   Text="Exception message"/>
+                        <TextBlock Style="{StaticResource Value}"
+                                   Text="{Binding ValidatesOnExceptions.Message, Mode=OneTime, TargetNullValue=-}"
+                                   TextWrapping="Wrap"/>
+
+                        <TextBlock Style="{StaticResource Label}" 
+                                   Text="Exception type"/>
+                        <TextBlock Style="{StaticResource Value}" 
+                                   Text="{Binding ExceptionType, Mode=OneTime, TargetNullValue=-}"/>
+
+                        <TextBlock Style="{StaticResource Label}"
+                                   Text="Callstack"/>
+                        <TextBlock Style="{StaticResource Value}"
+                                   Text="{Binding ValidatesOnExceptions.StackTrace, Mode=OneTime, TargetNullValue=-}"/>
+
+                        <TextBlock Style="{StaticResource Label}"
+                                   Text="Inner exception"/>
+                        <TextBlock Style="{StaticResource Value}"
+                                   Text="{Binding Exception.InnerException, Mode=OneWay, TargetNullValue=-}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Expander>
+        </Border>
+
+        <!-- Actions -->
+        <Button Grid.Row="2"
+                Margin="16"
+                Padding="8"
+                HorizontalAlignment="Right"
+                Content="Exit Application"
+                Click="ExitButton_Click"/>
+    </Grid>
+</Window>

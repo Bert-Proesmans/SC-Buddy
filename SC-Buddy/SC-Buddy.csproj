@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- Special TargetFramework moniker is required for DispatcherScheduler (System.Reactive.Threading)-->
+    <TargetFramework>net5.0-windows10.0.19041</TargetFramework>
+    <RootNamespace>SC_Buddy</RootNamespace>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Data\exchange-rates.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Data\exchange-rates.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="5.0.0" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="3.3.7" />
+  </ItemGroup>
+
+</Project>
