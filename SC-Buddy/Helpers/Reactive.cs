@@ -24,9 +24,11 @@ namespace SC_Buddy.Helpers
                         isBiggerThanDelta |= Math.Abs(lastKnownValue.Value.Y - newPoint.Y) > absDiffY;
                     }
 
-                    if (lastKnownValue.HasValue == false || isBiggerThanDelta)
+                    var prevValue = lastKnownValue;
+                    lastKnownValue = newPoint;
+
+                    if (prevValue.HasValue == false || isBiggerThanDelta)
                     {
-                        lastKnownValue = newPoint;
                         next.OnNext(newPoint);
                     }
                 },
