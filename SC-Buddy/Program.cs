@@ -48,7 +48,7 @@ namespace SC_Buddy
             var superchats = _automation.Egress.Subscribe(_feedbackHandler.Ingress);
             _subscriptions.Add(superchats);
 
-            var mouseInput2 = _hook.Stream.Subscribe(_feedbackHandler.IngressMouseMovements);
+            var mouseInput2 = _hook.Raw.Subscribe(_feedbackHandler.IngressMouseMovements);
             _subscriptions.Add(mouseInput2);
 
             // DEBUG; Self-destruct strategy
