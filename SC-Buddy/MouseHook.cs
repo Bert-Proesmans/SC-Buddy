@@ -1,5 +1,6 @@
 ﻿using SC_Buddy.Helpers;
 using System;
+using System.Diagnostics;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -114,18 +115,16 @@ namespace SC_Buddy
         {
             // ERROR; We asynchronously set our own handle, and a race happens when
             // the callback is executed before setup completed!
-            if (_hookHandle == null || nCode < 0)
-            {
-                return User32.CallNextHookEx(default, nCode, wParam, lParam);
-            }
+            if (_hookHandle == null || nCode < 0) goto Skip;
+            // NOTE; Skip all message that aren't about mouse movement.
+            if ((IntPtr)User32.WindowMessage.WM_MOUSEFIRST != wParam) goto Skip;
+            if (lParam == default) goto Skip;
+            var hookData = Marshal.PtrToStructure<User32.MSLLHOOKSTRUCT>(lParam);
+            
+            var eventData = new Point(hookData.pt.X, hookData.pt.Y);
+            _stream.OnNext(eventData);
 
-            if (lParam != default)
-            {
-                var hookData = Marshal.PtrToStructure<User32.MSLLHOOKSTRUCT>(lParam);
-                var eventData = new Point(hookData.pt.X, hookData.pt.Y);
-                _stream.OnNext(eventData);
-            }
-
+        Skip:
             return User32.CallNextHookEx(default, nCode, wParam, lParam);
         }
 
