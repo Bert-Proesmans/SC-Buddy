@@ -37,7 +37,7 @@ namespace SC_Buddy
             _highlight = highlight;
             _debug = debug;
             _uiThread = highlight.Dispatcher;
-            _hideTimer = new DispatcherTimer(TimeSpan.FromSeconds(10), DispatcherPriority.Normal, HideTimerTick, _uiThread);
+            _hideTimer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, HideTimerTick, _uiThread);
             _hideTimer.Stop();
 
             _subscriptions = new CompositeDisposable();
@@ -47,6 +47,7 @@ namespace SC_Buddy
                 .ObserveOn(_uiThread)
                 .Subscribe(x =>
             {
+                _hideTimer.Stop();
                 UpdateDebugWindow(x);
                 UpdateHighlight(x);
             });
@@ -55,6 +56,10 @@ namespace SC_Buddy
             var popupOpened = Observable.FromEventPattern<EventHandler, EventArgs>(
                 h => _highlight.Opened += h,
                 h => _highlight.Opened -= h)
+                .Select(_ => Unit.Default);
+            var popupClosed = Observable.FromEventPattern<EventHandler, EventArgs>(
+                h => _highlight.Closed += h,
+                h => _highlight.Closed += h)
                 .Select(_ => Unit.Default);
 
             var whenMouseEntered = Observable.FromEventPattern<MouseEventHandler, MouseEventArgs>(
@@ -68,9 +73,10 @@ namespace SC_Buddy
 
             var circuit = whenMouseEntered
                 .Merge(whenMouseLeaves)
-                // NOTE; Circuit allows flow at start
+                // NOTE; Circuit starts off in OPEN state
                 .StartWith(CircuitBreaker.Open)
-                .Publish();
+                // WARN; Keep circuit condition as state for new subscriptions!
+                .Replay(1);
 
             var cancelDispatchTimer = whenMouseEntered
                 .Subscribe(x => { Debug.WriteLine($"cancelDispatchTimer: {x}"); _hideTimer.Stop(); });
@@ -79,12 +85,12 @@ namespace SC_Buddy
             var startDispatcherTimer = popupOpened
                 .Select(_ => _ingressMouseMovements)
                 .Switch()
-                .IgnoreDelta(100, 100)
-                .Trace("IgnoreDelta")
+                // NOTE; Create dead zone to catch mouse drift
+                .IgnoreDelta(5, 5)
                 .CombineLatest(circuit)
                 .Where(x => x.Second == CircuitBreaker.Open)
-                .Take(1)
-                .RepeatWhen(x => whenMouseEntered)
+                .TakeUntil(popupClosed)
+                .Repeat()
                 .Subscribe(x => { Debug.WriteLine($"startDispatcherTimer: {x}"); _hideTimer.Start(); });
             _subscriptions.Add(startDispatcherTimer);
 
@@ -155,6 +161,8 @@ namespace SC_Buddy
             {
                 _debug.Hide();
             }
+
+            _hideTimer.Stop();
         }
 
         protected virtual void Dispose(bool disposing)
