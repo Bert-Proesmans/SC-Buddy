@@ -3,6 +3,8 @@
 Just point with your mouse to a written amount of money, preferably on Youtube. The program picks up what you are aimin' at!  
 The money amount is used to calculate a corresponding super chat color. 60% of the time works every time!
 
+![SC-Buddy demo](static/converted.gif)
+
 ## Components
 
 1. (C#-WPF) Managed app for providing overlay information.
