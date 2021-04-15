@@ -1,3 +1,7 @@
+Note; Packaging and releasing this code into a tool resulted in a 100+MB download. I'd stick my hand into a fire before releasing this.  
+So, I slapped a license onto this code and will rewrite it soon :tm:
+Have fun!
+
 # Super Chat Buddy
 
 Just point with your mouse to a written amount of money, preferably on Youtube. The program picks up what you are aimin' at!  
