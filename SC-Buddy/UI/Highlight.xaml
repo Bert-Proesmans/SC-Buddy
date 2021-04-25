@@ -26,6 +26,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto" MaxHeight="350"/>
+                    <RowDefinition Height="Auto" MaxHeight="20"/>
                 </Grid.RowDefinitions>
 
                 <Thumb Grid.Row="0"
@@ -86,6 +87,57 @@
                                TextWrapping="Wrap"/>
                     </Grid>
                 </Border>
+                <Grid Grid.Row="2"
+                        Background="SlateGray"
+                        Visibility="Visible">
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DirectionOfValuta, TargetNullValue={x:Null}}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Path Grid.Column="0"
+                              HorizontalAlignment="Left"
+                              Visibility="Collapsed"
+                              Data="M 401.166 478.097 113.178 245.004 401.166 11.903 391.536 0 88.834 245.004 391.536 490 Z" Fill="White" 
+                              Stretch="Fill" Height="20" Width="10">
+                            <Path.Style>
+                                <Style TargetType="{x:Type Path}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DirectionOfValuta, TargetNullValue={x:Null}}" Value="Left">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+
+                        <Path Grid.Column="1"
+                              HorizontalAlignment="Right"
+                              Visibility="Collapsed"
+                              Data="M 96.536 490 403.019 244.996 96.536 0 86.981 11.962 378.496 244.996 86.981 478.038 Z" Fill="White" 
+                              Stretch="Fill" Height="20" Width="10">
+                            <Path.Style>
+                                <Style TargetType="{x:Type Path}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DirectionOfValuta, TargetNullValue={x:Null}}" Value="Right">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>                            
+                        </Path>
+                    </Grid>
+                </Grid>
             </Grid>
         </Border>
     </Grid>

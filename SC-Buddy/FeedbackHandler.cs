@@ -11,6 +11,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -106,17 +107,26 @@ namespace SC_Buddy
                 throw new InvalidOperationException($"Highlight VM is supposed to be {nameof(SuperChatVM)}, man!");
 
             vm.Name = data.DollaDollaBill?.Name ?? "UNKNOWN";
+            vm.Message = data.DollaDollaBill?.Message ?? "UNKNOWN";
 
             var symbol = data.DollaDollaBill?.Currency?.Symbol.Value ?? "?";
             var amount = data.DollaDollaBill?.Amount?.ToString(CultureInfo.InvariantCulture) ?? "XXXX";
             vm.Amount = $"{symbol}{amount}";
+            vm.DirectionOfValuta = data.ValutaDirection;
 
             var scData = FetchSuperChatData(data.DollaDollaBill?.Currency, data.DollaDollaBill?.Amount);
             vm.HeaderBackground = new SolidColorBrush(scData.HeaderBackground);
             vm.TextBackground = scData.TextBackground.HasValue ? new SolidColorBrush(scData.TextBackground.Value) : null;
 
+            if (data.BoundingBox != null)
+            {
+                _highlight.PlacementRectangle = data.BoundingBox.Value;
+            }
+            else
+            {
+                _highlight.Placement = PlacementMode.Mouse;
+            }
 
-            _highlight.PlacementRectangle = data.BoundingBox;
             _highlight.IsOpen = true;
         }
 
@@ -141,10 +151,12 @@ namespace SC_Buddy
         [Conditional("DEBUG")]
         private void UpdateDebugWindow(SuppaChatto x)
         {
-            _debug.Left = x.BoundingBox.Left;
-            _debug.Top = x.BoundingBox.Top;
-            _debug.Width = x.BoundingBox.Width;
-            _debug.Height = x.BoundingBox.Height;
+            if (x.BoundingBox == null) return;
+
+            _debug.Left = x.BoundingBox.Value.Left;
+            _debug.Top = x.BoundingBox.Value.Top;
+            _debug.Width = x.BoundingBox.Value.Width;
+            _debug.Height = x.BoundingBox.Value.Height;
             _debug.Visibility = Visibility.Visible;
         }
 

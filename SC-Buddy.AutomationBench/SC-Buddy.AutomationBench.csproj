@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- Special TargetFramework moniker is required for DispatcherScheduler (System.Reactive.Threading)-->
+    <TargetFramework>net5.0-windows10.0.19041</TargetFramework>
+    <RootNamespace>SC_Buddy.AutomationBench</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SC-Buddy\SC-Buddy.csproj" />
+  </ItemGroup>
+
+</Project>

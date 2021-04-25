@@ -45,7 +45,7 @@ namespace SC_Buddy
     ///     of UI elements.
     /// 1. It works :tm:.. but could be better.
     /// </remarks>
-    class MouseHook : IDisposable
+    public class MouseHook : IDisposable
     {
         // NOTE; This funky setup is required to allow at most one mouse hook per
         // running process.

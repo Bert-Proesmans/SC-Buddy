@@ -22,6 +22,7 @@ namespace SC_Buddy.Model
         private string _name = "[Name]";
         private string _amount = "[Amount]";
         private string _message = "[Message]";
+        private DirectionOfValuta? _directionOfValuta = null;
 
         public Brush ProfileBackground
         {
@@ -70,6 +71,12 @@ namespace SC_Buddy.Model
         {
             get => _message;
             set => SetAndNotify(ref _message, value);
+        }
+
+        public DirectionOfValuta? DirectionOfValuta
+        {
+            get => _directionOfValuta;
+            set => SetAndNotify(ref _directionOfValuta, value);
         }
 
         private void SetAndNotify<T>(ref T oldValue, T newValue, [CallerMemberName] string propertyName = "")

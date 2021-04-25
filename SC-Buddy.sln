@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SC-Buddy", "SC-Buddy\SC-Buddy.csproj", "{EBAE4806-F1DE-47E6-8A8A-5F103E990557}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SC-Buddy.Tests", "SC-Buddy.Tests\SC-Buddy.Tests.csproj", "{437C33D3-82CD-4F30-B10E-BA23F9AA3F4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SC-Buddy.Tests", "SC-Buddy.Tests\SC-Buddy.Tests.csproj", "{437C33D3-82CD-4F30-B10E-BA23F9AA3F4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SC-Buddy.AutomationBench", "SC-Buddy.AutomationBench\SC-Buddy.AutomationBench.csproj", "{DCD3B90F-AB5B-4375-AE8C-8B23C278097A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{437C33D3-82CD-4F30-B10E-BA23F9AA3F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{437C33D3-82CD-4F30-B10E-BA23F9AA3F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{437C33D3-82CD-4F30-B10E-BA23F9AA3F4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCD3B90F-AB5B-4375-AE8C-8B23C278097A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCD3B90F-AB5B-4375-AE8C-8B23C278097A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCD3B90F-AB5B-4375-AE8C-8B23C278097A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCD3B90F-AB5B-4375-AE8C-8B23C278097A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
