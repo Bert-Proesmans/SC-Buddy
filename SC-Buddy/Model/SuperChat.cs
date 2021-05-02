@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media;
 
 namespace SC_Buddy.Model
@@ -11,6 +12,10 @@ namespace SC_Buddy.Model
         Color? TextBackground,
         Color TextForeground,
         Valuta MinimumValuta);
+
+    public enum DirectionOfValuta { None, Left, Right };
+    public record SuppaChatto(Rect? BoundingBox, DirectionOfValuta? ValutaDirection, Simp DollaDollaBill);
+    public record Simp(ISOCurrency? Currency, decimal? Amount, string? Name, string? Message);
 
     class SuperChatVM : INotifyPropertyChanged
     {
@@ -22,7 +27,7 @@ namespace SC_Buddy.Model
         private string _name = "[Name]";
         private string _amount = "[Amount]";
         private string _message = "[Message]";
-        private DirectionOfValuta? _directionOfValuta = null;
+        private DirectionOfValuta _directionOfValuta = DirectionOfValuta.None;
 
         public Brush ProfileBackground
         {
@@ -73,7 +78,7 @@ namespace SC_Buddy.Model
             set => SetAndNotify(ref _message, value);
         }
 
-        public DirectionOfValuta? DirectionOfValuta
+        public DirectionOfValuta DirectionOfValuta
         {
             get => _directionOfValuta;
             set => SetAndNotify(ref _directionOfValuta, value);

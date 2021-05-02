@@ -106,13 +106,14 @@ namespace SC_Buddy
             if (_highlight.DataContext is not SuperChatVM vm)
                 throw new InvalidOperationException($"Highlight VM is supposed to be {nameof(SuperChatVM)}, man!");
 
-            vm.Name = data.DollaDollaBill?.Name ?? "UNKNOWN";
-            vm.Message = data.DollaDollaBill?.Message ?? "UNKNOWN";
+            vm.Name = data.DollaDollaBill?.Name?.Trim() ?? "UNKNOWN";
+            vm.Message = data.DollaDollaBill?.Message?.Trim() ?? "UNKNOWN";
 
             var symbol = data.DollaDollaBill?.Currency?.Symbol.Value ?? "?";
             var amount = data.DollaDollaBill?.Amount?.ToString(CultureInfo.InvariantCulture) ?? "XXXX";
             vm.Amount = $"{symbol}{amount}";
-            vm.DirectionOfValuta = data.ValutaDirection;
+            vm.DirectionOfValuta = data.ValutaDirection ?? DirectionOfValuta.None;
+            Debug.WriteLine($"Feedback VM direction set to {vm.DirectionOfValuta}");
 
             var scData = FetchSuperChatData(data.DollaDollaBill?.Currency, data.DollaDollaBill?.Amount);
             vm.HeaderBackground = new SolidColorBrush(scData.HeaderBackground);

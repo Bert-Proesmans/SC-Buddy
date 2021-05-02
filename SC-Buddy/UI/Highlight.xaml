@@ -14,19 +14,16 @@
         <model:SuperChatVM/>
     </Popup.DataContext>
     <Grid>
-        <Border Grid.Column="0" CornerRadius="4">
-            <!-- TODO; Find out why in godsname dropshadow doesn't work and any kind of padding doesn't
-            generate useful visual debugging info either -->
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="5" ShadowDepth="100" />
-            </Border.Effect>
-        </Border>
-        <Border Grid.Column="0" CornerRadius="4">
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="5" Opacity="0.3" ShadowDepth="3"/>
+        </Grid.Effect>
+        <Border Grid.Column="0" CornerRadius="4" Margin="0,0,5,5">
             <Grid>
                 <Grid.RowDefinitions>
+                    <!-- SC Header -->
                     <RowDefinition Height="Auto"/>
+                    <!-- SC Text content -->
                     <RowDefinition Height="Auto" MaxHeight="350"/>
-                    <RowDefinition Height="Auto" MaxHeight="20"/>
                 </Grid.RowDefinitions>
 
                 <Thumb Grid.Row="0"
@@ -35,9 +32,38 @@
                    Width="0"
                    Height="0"/>
 
+                <!-- NOTE; Superchat text content -->
+                <!-- 
+                    WARN; Border element with content is placed above border with header to perform rendering behind the header. 
+                    WARN; Vertical negative margin is used to push content behind the header.
+                -->
+                <Border Grid.Row="1"
+                        Background="{Binding TextBackground}"
+                        CornerRadius="4"
+                        Margin="0,-5,0,0"
+                        Padding="16,13,16,8">
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TextBackground, TargetNullValue={x:Null}}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <TextBlock Text="{Binding Message}"
+                               Foreground="{Binding TextForeground}"
+                               TextWrapping="Wrap"/>
+                    </Grid>
+                </Border>                
+                
+                <!-- NOTE; SC header content -->
                 <Border Grid.Row="0"
-                    Background="{Binding HeaderBackground}"
-                    Padding="16,8">
+                        Background="{Binding HeaderBackground}"
+                        CornerRadius="4"
+                        Padding="16,8">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -48,9 +74,7 @@
                             <ColumnDefinition Width="Auto" MinWidth="303"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Column="0"
-                        Grid.RowSpan="2"
-                        Padding="0,0,16,0">
+                        <Border Grid.Column="0" Grid.RowSpan="2" Padding="0,0,16,0">
                             <Ellipse Fill="{Binding ProfileBackground}"
                                  Width="40"
                                  Height="40"/>
@@ -68,31 +92,15 @@
                     </Grid>
                 </Border>
 
-                <Border Grid.Row="1"
-                    Padding="16,8"
-                    Background="{Binding TextBackground}"
-                    Visibility="Visible">
+                <!-- NOTE; SC amount arrow -->
+                <Grid Grid.Row="0"
+                      VerticalAlignment="Bottom"
+                      MaxHeight="20"
+                      Margin="4,2">
                     <Grid>
                         <Grid.Style>
                             <Style TargetType="{x:Type Grid}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding TextBackground, TargetNullValue={x:Null}}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        <TextBlock Text="{Binding Message}"
-                               Foreground="{Binding TextForeground}"
-                               TextWrapping="Wrap"/>
-                    </Grid>
-                </Border>
-                <Grid Grid.Row="2"
-                        Background="SlateGray"
-                        Visibility="Visible">
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="{x:Type Grid}">
+                                <Setter Property="Visibility" Value="Visible"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding DirectionOfValuta, TargetNullValue={x:Null}}" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -106,14 +114,21 @@
                         </Grid.ColumnDefinitions>
 
                         <Path Grid.Column="0"
-                              HorizontalAlignment="Left"
-                              Visibility="Collapsed"
-                              Data="M 401.166 478.097 113.178 245.004 401.166 11.903 391.536 0 88.834 245.004 391.536 490 Z" Fill="White" 
-                              Stretch="Fill" Height="20" Width="10">
+                              HorizontalAlignment="Left"                              
+                              Data="M 401.166 478.097 113.178 245.004 401.166 11.903 391.536 0 88.834 245.004 391.536 490 Z" 
+                              StrokeThickness="2"
+                              Stretch="Uniform" Height="20" Width="10">
+                            <Path.Stroke>
+                                <SolidColorBrush Color="White" Opacity="0.3"/>
+                            </Path.Stroke>
                             <Path.Style>
                                 <Style TargetType="{x:Type Path}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DirectionOfValuta, TargetNullValue={x:Null}}" Value="Left">
+                                        <DataTrigger Binding="{Binding DirectionOfValuta}">
+                                            <DataTrigger.Value>
+                                                <model:DirectionOfValuta>Left</model:DirectionOfValuta>
+                                            </DataTrigger.Value>
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -123,18 +138,25 @@
 
                         <Path Grid.Column="1"
                               HorizontalAlignment="Right"
-                              Visibility="Collapsed"
-                              Data="M 96.536 490 403.019 244.996 96.536 0 86.981 11.962 378.496 244.996 86.981 478.038 Z" Fill="White" 
-                              Stretch="Fill" Height="20" Width="10">
+                              Data="M 96.536 490 403.019 244.996 96.536 0 86.981 11.962 378.496 244.996 86.981 478.038 Z" 
+                              StrokeThickness="2"
+                              Stretch="Uniform" Height="20" Width="10">
+                            <Path.Stroke>
+                                <SolidColorBrush Color="White" Opacity="0.3"/>
+                            </Path.Stroke>
                             <Path.Style>
                                 <Style TargetType="{x:Type Path}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DirectionOfValuta, TargetNullValue={x:Null}}" Value="Right">
+                                        <DataTrigger Binding="{Binding DirectionOfValuta}">
+                                            <DataTrigger.Value>
+                                                <model:DirectionOfValuta>Right</model:DirectionOfValuta>
+                                            </DataTrigger.Value>
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Path.Style>                            
+                            </Path.Style>
                         </Path>
                     </Grid>
                 </Grid>

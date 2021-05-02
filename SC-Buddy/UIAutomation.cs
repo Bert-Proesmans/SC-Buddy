@@ -13,10 +13,6 @@ using System.Windows.Automation;
 
 namespace SC_Buddy
 {
-    public enum DirectionOfValuta { Left, Right };
-    public record SuppaChatto(Rect? BoundingBox, DirectionOfValuta? ValutaDirection, Simp DollaDollaBill);
-    public record Simp(ISOCurrency? Currency, decimal? Amount, string? Name, string? Message);
-
     public class UIAutomation : IDisposable
     {
         record AutomationDetails(
@@ -168,7 +164,7 @@ namespace SC_Buddy
 
             // TODO; Introduce fricking lenses, djeezus
             var old = state.Result;
-            var bb = old?.BoundingBox ?? potentialTarget?.Cached.BoundingRectangle;
+            var bb = old?.BoundingBox ?? state.Origin.Cached.BoundingRectangle;
             var ddb = new Simp(Currency, Amount, old?.DollaDollaBill?.Message ?? default, old?.DollaDollaBill?.Name ?? default);
             var newResult = new SuppaChatto(bb, old?.ValutaDirection, ddb);
             return new(potentialTarget, state.Origin, state.RowCellElements, newResult);
@@ -205,7 +201,7 @@ namespace SC_Buddy
 
             // TODO; Introduce fricking lenses, djeezus
             var old = state.Result;
-            var bb = old?.BoundingBox ?? PotentialTarget?.Cached.BoundingRectangle;
+            var bb = old?.BoundingBox ?? state.Origin.Cached.BoundingRectangle;
             var vd = old?.ValutaDirection ?? valutaDirection;
             var ddb = new Simp(Currency, Amount, old?.DollaDollaBill?.Message, old?.DollaDollaBill?.Name);
             var newResult = new SuppaChatto(bb, vd, ddb);
@@ -232,6 +228,9 @@ namespace SC_Buddy
                 if (element == null) continue;
 
                 var elementName = element.Cached.Name;
+                // NOTE; Skip all text right of the target element starting from explicit mention
+                // of "Super Chat"
+                if (elementName.Equals("Super Chat")) break;
                 sb.AppendLine(elementName);
             }
 
@@ -317,6 +316,7 @@ namespace SC_Buddy
                 // TODO; Use header info to O(1) find the correct cell and value.
             }
 
+            // NOTE; Loop through all cells to find the target amount, this could result in false positives .. :(
             foreach (var (cell, _) in items)
             {
                 if (cell == null) continue;
