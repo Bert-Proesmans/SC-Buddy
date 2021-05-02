@@ -37,6 +37,8 @@ namespace SC_Buddy.Model
 
         private static ISOCurrency[] InitCurrencies() =>
             CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.NeutralCultures)
+                // NOTE; Exclude Invariant culture because "invariant" is not useful to us.
+                .Where(culture => culture.LCID != 127)
                 .Select(culture => (culture, new RegionInfo(culture.LCID)))
                 .Select(x => new ISOCurrency(
                         x.culture,
