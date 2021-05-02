@@ -56,8 +56,7 @@ jobs:
     env:
       Project_Path: SC-Buddy\SC-Buddy.csproj
       Test_Project_Path: SC-Buddy.Tests\SC-Buddy.Tests.csproj
-      Project_Publish_Path: SC-Buddy\Publish
-    
+      
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -86,7 +85,7 @@ jobs:
 
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create the app package
-      run: msbuild $env:Project_Path /p:Configuration=$env:Configuration /t:Publish /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:OutputPath=$env:Project_Publish_Path
+      run: msbuild $env:Project_Path /p:Configuration=$env:Configuration /t:Publish /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:OutputPath="..\bin\\"
       env:
         Configuration: ${{ matrix.configuration }}
 
@@ -95,4 +94,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Selfcontained executable
-        path: ${{ env.Project_Publish_Path }}
+        path: bin\publish
