@@ -89,6 +89,9 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
+    - name: Copy HTML file for testing to publish directory
+      run: Copy-Item -Path '.\static\superchat test.html' -Destination '.\bin\publish\superchat test.html'
+      
     # Upload the package: https://github.com/marketplace/actions/upload-artifact
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
